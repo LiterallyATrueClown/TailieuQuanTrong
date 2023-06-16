@@ -298,7 +298,7 @@ local thirdworldquestmodule = {
     },
     {
         MinLevel = 2425,
-        MaxLevel = 2449,
+        MaxLevel = 2450,
         QuestName = "CandyQuest1",
         MobName = "Snow Demon [Lv. 2425]",
         QuestLevel = 2,
