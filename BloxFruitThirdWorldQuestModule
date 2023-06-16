@@ -1,0 +1,309 @@
+local thirdworldquestmodule = {
+    {
+        MinLevel = 1500,
+        MaxLevel = 1524,
+        QuestName = "PiratePortQuest",
+        MobName = "Pirate Millionaire [Lv. 1500]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-290.074677, 42.9034653, 5581.58984, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627),
+        MobCFrame = CFrame.new(81.164993286133, 43.755737304688, 5724.7021484375)
+    },
+    {
+        MinLevel = 1525,
+        MaxLevel = 1574,
+        QuestName = "PiratePortQuest",
+        MobName = "Pistol Billionaire [Lv. 1525]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-290.074677, 42.9034653, 5581.58984, 0.965929627, -0, -0.258804798, 0, 1, -0, 0.258804798, 0, 0.965929627),
+        MobCFrame = CFrame.new(81.164993286133, 43.755737304688, 5724.7021484375)
+    },
+    {
+        MinLevel = 1575,
+        MaxLevel = 1599,
+        QuestName = "AmazonQuest",
+        MobName = "Dragon Crew Warrior [Lv. 1575]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(5832.83594, 51.6806107, -1101.51563, 0.898790359, -0, -0.438378751, 0, 1, -0, 0.438378751, 0, 0.898790359),
+        MobCFrame = CFrame.new(6241.9951171875, 51.522083282471, -1243.9771728516)
+    },
+    {
+        MinLevel = 1600,
+        MaxLevel = 1624,
+        QuestName = "AmazonQuest",
+        MobName = "Dragon Crew Archer [Lv. 1600]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(5832.83594, 51.6806107, -1101.51563, 0.898790359, -0, -0.438378751, 0, 1, -0, 0.438378751, 0, 0.898790359),
+        MobCFrame = CFrame.new(6488.9155273438, 383.38375854492, -110.66246032715)
+    },
+    {
+        MinLevel = 1625,
+        MaxLevel = 1649,
+        QuestName = "AmazonQuest2",
+        MobName = "Female Islander [Lv. 1625]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(5448.86133, 601.516174, 751.130676, 0, 0, 1, 0, 1, -0, -1, 0, 0),
+        MobCFrame = CFrame.new(4770.4990234375, 758.95520019531, 1069.8680419922)
+    },
+    {
+        MinLevel = 1600,
+        MaxLevel = 1624,
+        QuestName = "AmazonQuest2",
+        MobName = "Giant Islander [Lv. 1650]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(5448.86133, 601.516174, 751.130676, 0, 0, 1, 0, 1, -0, -1, 0, 0),
+        MobCFrame = CFrame.new(4530.3540039063, 656.75695800781, -131.60952758789)
+    },
+    {
+        MinLevel = 1700,
+        MaxLevel = 1724,
+        QuestName = "MarineTreeIsland",
+        MobName = "Marine Commodore [Lv. 1700]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(2180.54126, 27.8156815, -6741.5498, -0.965929747, 0, 0.258804798, 0, 1, 0, -0.258804798, 0, -0.965929747),
+        MobCFrame = CFrame.new(2490.0844726563, 190.4232635498, -7160.0502929688)
+    },
+    {
+        MinLevel = 1725,
+        MaxLevel = 1774,
+        QuestName = "MarineTreeIsland",
+        MobName = "Marine Rear Admiral [Lv. 1725]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(2180.54126, 27.8156815, -6741.5498, -0.965929747, 0, 0.258804798, 0, 1, 0, -0.258804798, 0, -0.965929747),
+        MobCFrame = CFrame.new(3951.3903808594, 229.11549377441, -6912.81640625)
+    },
+    {
+        MinLevel = 1775,
+        MaxLevel = 1799,
+        QuestName = "DeepForestIsland3",
+        MobName = "Fishman Raider [Lv. 1775]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-10581.6563, 330.872955, -8761.18652, -0.882952213, 0, 0.469463557, 0, 1, 0, -0.469463557, 0, -0.882952213),
+        MobCFrame = CFrame.new(-10322.400390625, 390.94473266602, -8580.0908203125)
+    },
+    {
+        MinLevel = 1800,
+        MaxLevel = 1824,
+        QuestName = "DeepForestIsland3",
+        MobName = "Fishman Captain [Lv. 1800]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-10581.6563, 330.872955, -8761.18652, -0.882952213, 0, 0.469463557, 0, 1, 0, -0.469463557, 0, -0.882952213),
+        MobCFrame = CFrame.new(-11194.541992188, 442.02795410156, -8608.806640625)
+    },
+    {
+        MinLevel = 1825,
+        MaxLevel = 1849,
+        QuestName = "DeepForestIsland",
+        MobName = "Forest Pirate [Lv. 1825]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-13234.04, 331.488495, -7625.40137, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247),
+        MobCFrame = CFrame.new(-13225.809570313, 428.19387817383, -7753.1245117188)
+    },
+    {
+        MinLevel = 1850,
+        MaxLevel = 1899,
+        QuestName = "DeepForestIsland",
+        MobName = "Mythological Pirate [Lv. 1850]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-13234.04, 331.488495, -7625.40137, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247),
+        MobCFrame = CFrame.new(-13869.172851563, 564.95251464844, -7084.4135742188)
+    },
+    {
+        MinLevel = 1825,
+        MaxLevel = 1849,
+        QuestName = "DeepForestIsland",
+        MobName = "Forest Pirate [Lv. 1825]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-13234.04, 331.488495, -7625.40137, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247),
+        MobCFrame = CFrame.new(-13225.809570313, 428.19387817383, -7753.1245117188)
+    },
+    {
+        MinLevel = 1850,
+        MaxLevel = 1899,
+        QuestName = "DeepForestIsland",
+        MobName = "Mythological Pirate [Lv. 1850]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-13234.04, 331.488495, -7625.40137, 0.707134247, -0, -0.707079291, 0, 1, -0, 0.707079291, 0, 0.707134247),
+        MobCFrame = CFrame.new(-13869.172851563, 564.95251464844, -7084.4135742188)
+    },
+    {
+        MinLevel = 1900,
+        MaxLevel = 1924,
+        QuestName = "DeepForestIsland2",
+        MobName = "Jungle Pirate [Lv. 1900]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-12680.3818, 389.971039, -9902.01953, -0.0871315002, 0, 0.996196866, 0, 1, 0, -0.996196866, 0, -0.0871315002),
+        MobCFrame = CFrame.new(-11982.221679688, 376.32522583008, -10451.415039063)
+    },
+    {
+        MinLevel = 1925,
+        MaxLevel = 1974,
+        QuestName = "DeepForestIsland2",
+        MobName = "Musketeer Pirate [Lv. 1925]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-12680.3818, 389.971039, -9902.01953, -0.0871315002, 0, 0.996196866, 0, 1, 0, -0.996196866, 0, -0.0871315002),
+        MobCFrame = CFrame.new(-13282.3046875, 496.23684692383, -9565.150390625)
+    },
+    {
+        MinLevel = 1975,
+        MaxLevel = 1999,
+        QuestName = "HauntedQuest1",
+        MobName = "Reborn Skeleton [Lv. 1975]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-9480.8271484375, 142.13066101074, 5566.0712890625),
+        MobCFrame = CFrame.new(-8817.880859375, 191.16761779785, 6298.6557617188)
+    },
+    {
+        MinLevel = 2000,
+        MaxLevel = 2024,
+        QuestName = "HauntedQuest1",
+        MobName = "Living Zombie [Lv. 2000]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-9480.8271484375, 142.13066101074, 5566.0712890625),
+        MobCFrame = CFrame.new(-10125.234375, 183.94705200195, 6242.013671875)
+    },
+    {
+        MinLevel = 2025,
+        MaxLevel = 2049,
+        QuestName = "HauntedQuest2",
+        MobName = "Demonic Soul [Lv. 2025]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-9516.9931640625, 178.00651550293, 6078.4653320313),
+        MobCFrame = CFrame.new(-9712.03125, 204.69589233398, 6193.322265625),
+    },
+    {
+        MinLevel = 2050,
+        MaxLevel = 2074,
+        QuestName = "HauntedQuest2",
+        MobName = "Posessed Mummy [Lv. 2050]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-9516.9931640625, 178.00651550293, 6078.4653320313),
+        MobCFrame = CFrame.new(-9545.7763671875, 69.619895935059, 6339.5615234375)
+    },
+    {
+        MinLevel = 2075,
+        MaxLevel = 2099,
+        QuestName = "NutsIslandQuest",
+        MobName = "Peanut Scout [Lv. 2075]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-2104.17163, 38.1299706, -10194.418, 0.758814394, -1.38604395e-09, 0.651306927, 2.85280208e-08, 1, -3.1108879e-08, -0.651306927, 4.21863646e-08, 0.758814394),
+        MobCFrame = CFrame.new(-2098.07544, 192.611862, -10248.8867, 0.983392298, -9.57031787e-08, 0.181492642, 8.7276355e-08, 1, 5.44169616e-08, -0.181492642, -3.76732068e-08, 0.983392298)
+    },
+    {
+        MinLevel = 2100,
+        MaxLevel = 2124,
+        QuestName = "NutsIslandQuest",
+        MobName = "Peanut President [Lv. 2100]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-2104.17163, 38.1299706, -10194.418, 0.758814394, -1.38604395e-09, 0.651306927, 2.85280208e-08, 1, -3.1108879e-08, -0.651306927, 4.21863646e-08, 0.758814394),
+        MobCFrame = CFrame.new(-1876.95959, 192.610947, -10542.2939, 0.0553516336, -2.83836812e-08, 0.998466909, -6.89634405e-10, 1, 2.84654931e-08, -0.998466909, -2.26418861e-09, 0.0553516336)
+    },
+    {
+        MinLevel = 2125,
+        MaxLevel = 2149,
+        QuestName = "IceCreamIslandQuest",
+        MobName = "Ice Cream Chef [Lv. 2125]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-820.404358, 65.8453293, -10965.5654, 0.822534859, 5.24448502e-08, -0.568714678, -2.08336317e-08, 1, 6.20846663e-08, 0.568714678, -3.92184099e-08, 0.822534859),
+        MobCFrame = CFrame.new(-821.614075, 208.39537, -10990.7617, -0.870096624, 3.18909272e-08, 0.492881238, -1.8357893e-08, 1, -9.71107568e-08, -0.492881238, -9.35439957e-08, -0.870096624)
+    },
+    {
+        MinLevel = 2150,
+        MaxLevel = 2199,
+        QuestName = "IceCreamIslandQuest",
+        MobName = "Ice Cream Commander [Lv. 2150]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-819.376526, 67.4634171, -10967.2832),
+        MobCFrame = CFrame.new(-610.11669921875, 208.26904296875, -11253.686523438)
+    },
+    {
+        MinLevel = 2200,
+        MaxLevel = 2224,
+        QuestName = "CakeQuest1",
+        MobName = "Cookie Crafter [Lv. 2200]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-2020.6068115234375, 37.82400894165039, -12027.80859375),
+        MobCFrame = CFrame.new(-2286.684326171875, 146.5656280517578, -12226.8818359375)
+    },
+    {
+        MinLevel = 2225,
+        MaxLevel = 2249,
+        QuestName = "CakeQuest1",
+        MobName = "Cake Guard [Lv. 2225]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-2020.6068115234375, 37.82400894165039, -12027.80859375),
+        MobCFrame = CFrame.new(-1817.9747314453125, 209.5632781982422, -12288.9228515625)
+    },
+    {
+        MinLevel = 2250,
+        MaxLevel = 2274,
+        QuestName = "CakeQuest2",
+        MobName = "Baking Staff [Lv. 2250]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-1928.31763, 37.7296638, -12840.626),
+        MobCFrame = CFrame.new(-1818.347900390625, 93.41275787353516, -12887.66015625)
+    },
+    {
+        MinLevel = 2275,
+        MaxLevel = 2299,
+        QuestName = "CakeQuest2",
+        MobName = "Head Baker [Lv. 2275]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-1928.31763, 37.7296638, -12840.626),
+        MobCFrame = CFrame.new(-2288.795166015625, 106.9419174194336, -12811.111328125)
+    },
+    {
+        MinLevel = 2300,
+        MaxLevel = 2324,
+        QuestName = "ChocQuest1",
+        MobName = "Cocoa Warrior [Lv. 2300]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(231.75, 26.4377403, -12200.292, -1, 0, 0, 0, 1, 0, 0, 0, -1),
+        MobCFrame = CFrame.new(-84.4887772, 85.3732758, -12299.5703, 0.716832519, 2.59735877e-08, 0.697245419, 9.44634522e-08, 1, -1.34368847e-07, -0.697245419, 1.62184165e-07, 0.716832519)
+    },
+    {
+        MinLevel = 2325,
+        MaxLevel = 2349,
+        QuestName = "ChocQuest1",
+        MobName = "Chocolate Bar Battler [Lv. 2325]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(231.75, 26.4377403, -12200.292, -1, 0, 0, 0, 1, 0, 0, 0, -1),
+        MobCFrame = CFrame.new(763.170532, 84.6912766, -12679.8672, -0.991882861, 4.89826668e-08, -0.127154797, 4.46087824e-08, 1, 3.72457656e-08, 0.127154797, 3.12712167e-08, -0.991882861)
+    },
+    {
+        MinLevel = 2350,
+        MaxLevel = 2374,
+        QuestName = "ChocQuest2",
+        MobName = "Sweet Thief [Lv. 2350]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(151.198532, 26.4281521, -12774.6172, 0.422592998, 0, 0.906319618, 0, 1, 0, -0.906319618, 0, 0.422592998),
+        MobCFrame = CFrame.new(-7.53845263, 62.9809685, -12624.6396, 0.99998486, 0, 0.00550999399, -0, 1.00000012, -0, -0.00550999399, 0, 0.99998486)
+    },
+    {
+        MinLevel = 2375,
+        MaxLevel = 2399,
+        QuestName = "ChocQuest2",
+        MobName = "Candy Rebel [Lv. 2375]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(151.198532, 26.4281521, -12774.6172, 0.422592998, 0, 0.906319618, 0, 1, 0, -0.906319618, 0, 0.422592998),
+        MobCFrame = CFrame.new(62.3825951, 61.4891281, -12962.9512, -0.155219525, 2.15602491e-09, 0.987879992, 9.59637436e-09, 1, -6.74656997e-10, -0.987879992, 9.37534672e-09, -0.155219525)
+    },
+    {
+        MinLevel = 2400,
+        MaxLevel = 2424,
+        QuestName = "CandyQuest1",
+        MobName = "Candy Pirate [Lv. 2400]",
+        QuestLevel = 1,
+        QuestCFrame = CFrame.new(-1149.328, 16.1133957, -14445.6143, -0.156446099, 0, -0.987686574, 0, 1, 0, 0.987686574, 0, -0.156446099),
+        MobCFrame = CFrame.new(-1340.70471, 71.91465, -14573.1777, -0.391969442, 1.69314418e-09, -0.919978261, 1.18768595e-08, 1, -3.21988236e-09, 0.919978261, -1.21885479e-08, -0.391969442)
+    },
+    {
+        MinLevel = 2425,
+        MaxLevel = 2449,
+        QuestName = "CandyQuest1",
+        MobName = "Snow Demon [Lv. 2425]",
+        QuestLevel = 2,
+        QuestCFrame = CFrame.new(-1149.328, 16.1133957, -14445.6143, -0.156446099, 0, -0.987686574, 0, 1, 0, 0.987686574, 0, -0.156446099),
+        MobCFrame = CFrame.new(-830.475708, 84.5066223, -14533.9375, 0.977068961, 1.01153184e-07, 0.21292308, -9.78561374e-08, 1, -2.60234216e-08, -0.21292308, 4.59084726e-09, 0.977068961)
+    },
+}
+return thirdworldquestmodule
