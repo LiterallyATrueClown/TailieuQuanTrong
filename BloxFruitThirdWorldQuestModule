@@ -730,7 +730,7 @@ local Quests = {
         QuestName = "CandyQuest1",
         EnemyName = "Candy Pirate",
         LevelQuest = 1,
-        CFramePos = CFrame.new(-1149.3280029296875, 13.57590389251709, -14445.6142578125),,
+        CFramePos = CFrame.new(-1149.3280029296875, 13.57590389251709, -14445.6142578125),
         QuestGiver = " ",
         World = 3
     },
@@ -739,7 +739,7 @@ local Quests = {
         QuestName = "CandyQuest1",
         EnemyName = "Snow Demon",
         LevelQuest = 2,
-        CFramePos = CFrame.new(-1149.3280029296875, 13.57590389251709, -14445.6142578125),,
+        CFramePos = CFrame.new(-1149.3280029296875, 13.57590389251709, -14445.6142578125),
         QuestGiver = " ",
         World = 3
     }
