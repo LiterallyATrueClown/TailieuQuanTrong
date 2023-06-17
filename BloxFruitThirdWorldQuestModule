@@ -1,7 +1,8 @@
-local QuestsData = {QuestsNames, Quests}
+local QuestsData = {QuestsNames = "", Quests = {}}
 
 local Quests = {
     -- First Sea
+	
     Bandit = {
         Enemy = "Bandit [Lv. 5]",
         QuestName = "BanditQuest1",
@@ -1176,6 +1177,7 @@ function QuestsData.CheckForQuest(Enemy)
             return true
         end
 	end
+
 	return false
 end
 
