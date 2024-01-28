@@ -12,119 +12,79 @@ local FileName = GameName..".rbxmx"
 extraFolder.Name = "_IMPORTANT_AND_EXTRA_INSTANCES_"
 
 if not isfile(FileName) then
-	writefile(FileName, "")
+    writefile(FileName, "")
 end
 
-local ignoreProps = {
-	["Instance"] = {
-		["Archivable"] = true,
-		["DataCost"] = true,
-		["ClassName"] = true,
-		["RobloxLocked"] = true,
-		["Parent"] = true
-	},
-	["Workspace"] = {
-		["DistributedGameTime"] = true
-	},
-	["BasePart"] = {
-		["Position"] = true,
-		["Rotation"] = true
-	}
-}
-
-local propAlt = {
-	["Sound"] = {
-		["MaxDistance"] = "xmlRead_MaxDistance_3"
-	}
-}
-
 local err = ypcall(function()
-	if APIOverride and APIOverride ~= "" then
-		APIJson = APIOverride
-	else
-		if isfile("API-DUMP.json") then
-			APIJson = readfile("API-DUMP.json")
-		else
-			writefile("API-DUMP.json", game:HttpGetAsync("https://raw.githubusercontent.com/LiterallyATrueClown/Owo/main/API-DUMP.json"))
-			APIJson = readfile("API-DUMP.json")
-		end
-	end
+    if APIOverride and APIOverride ~= "" then
+        APIJson = APIOverride
+    else
+        if isfile("API-DUMP.json") then
+            APIJson = readfile("API-DUMP.json")
+        else
+            writefile("API-DUMP.json", game:HttpGetAsync("https://raw.githubusercontent.com/LiterallyATrueClown/Owo/main/API-DUMP.json"))
+            APIJson = readfile("API-DUMP.json")
+        end
+    end
 end)
 
 if err then
-	if script:FindFirstChild("API") then
-		APIJson = require(script.API)
-	end
+    if script:FindFirstChild("API") then
+        APIJson = require(script.API)
+    end
 end
 
 APIJson = http:JSONDecode(APIJson)
 
-for i,v in pairs(APIJson) do
-	if v.type == "Class" then
-		API[v.Name] = v
-		API[v.Name].Properties = {}
-	elseif v.type == "Property" then
-		local dontuse = false
-		for i2,v2 in pairs(v.tags) do
-			if v2 == "deprecated" or v2 == "hidden" or v2 == "readonly" then
-				dontuse = true
-			end
-		end
-		if ignoreProps[v.Class] and ignoreProps[v.Class][v.Name] then dontuse = true end
-		if propAlt[v.Class] and propAlt[v.Class][v.Name] then v.AltName = propAlt[v.Class][v.Name] end
-		if not dontuse then
-			table.insert(API[v.Class].Properties,v)
-		end
-	end
+for _, class in ipairs(APIJson.Classes) do
+    API[class.Name] = class
+    API[class.Name].Properties = {}
+end
+
+for _, property in ipairs(APIJson.Properties) do
+    local dontuse = false
+    for _, tag in ipairs(property.Tags) do
+        if tag == "deprecated" or tag == "hidden" or tag == "readonly" then
+            dontuse = true
+        end
+    end
+    if ignoreProps[property.Class] and ignoreProps[property.Class][property.Name] then dontuse = true end
+    if propAlt[property.Class] and propAlt[property.Class][property.Name] then property.AltName = propAlt[property.Class][property.Name] end
+    if not dontuse then
+        table.insert(API[property.Class].Properties, property)
+    end
 end
 
 local function getProperties(obj)
-	if savedProps[obj.ClassName] then return savedProps[obj.ClassName] end
-	
-	local tempProps = {}
-	local currentClass = obj.ClassName
-	
-	while currentClass do
-		for i,v in pairs(API[currentClass].Properties) do
-			table.insert(tempProps,v)
-		end
-		currentClass = API[currentClass].Superclass
-	end
-	
-	table.sort(tempProps,function(a,b)
-		return (a.AltName or a.Name) < (b.AltName or b.Name)
-	end)
-	savedProps[obj.ClassName] = tempProps
-	return tempProps
+    if savedProps[obj.ClassName] then return savedProps[obj.ClassName] end
+    
+    local tempProps = {}
+    local currentClass = obj.ClassName
+    
+    while currentClass do
+        for _, property in ipairs(API[currentClass].Properties) do
+            table.insert(tempProps, property)
+        end
+        currentClass = API[currentClass].Superclass
+    end
+    
+    table.sort(tempProps, function(a, b)
+        return (a.AltName or a.Name) < (b.AltName or b.Name)
+    end)
+    savedProps[obj.ClassName] = tempProps
+    return tempProps
 end
 
-local function checkRef(obj)
-	local check = instanceRefs[obj]
-	if check then
-		return tostring(check)
-	end
-	instanceRefs[obj] = instanceCount
-	return tostring(instanceCount)
-end
-
-local function setRef(obj)
-	if obj == nil then return "null" end
-	local check = instanceRefs[obj]
-	if check then
-		return "RBX"..tostring(check)
-	end
-	instanceCount = instanceCount + 1
-	instanceRefs[obj] = instanceCount
-	return "RBX"..tostring(instanceCount)
-end
-
-function CreateInstance(cls,props)
-	local inst = Instance.new(cls)
-	for i,v in pairs(props) do
-		inst[i] = v
-	end
-	return inst
-end
+local specialClassCases = {
+    ["Workspace"] = function(inst)
+        if inst:PGSIsEnabled() then
+            saveString = saveString..'\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
+        else
+            saveString = saveString..'\n<bool name="PGSPhysicsSolverEnabled">false</bool>'
+        end
+        propFunc["double"](inst,"FallenPartsDestroyHeight")
+    end
+}
 
 local propFunc = {
     ["bool"] = function(inst, prop)
@@ -183,6 +143,9 @@ local propFunc = {
     ["Rect2D"] = function(inst, prop)
         saveString = string.format('%s\n<Rect2D name="%s">\n<min>\n<X>%s</X>\n<Y>%s</Y>\n</min>\n<max>\n<X>%s</X>\n<Y>%s</Y>\n</max>\n</Rect2D>', saveString, prop, tostring(inst[prop].Min.X), tostring(inst[prop].Min.Y), tostring(inst[prop].Max.X), tostring(inst[prop].Max.Y))
     end,
+    ["ColorSequenceKeyPoint"] = function(inst, prop)
+        saveString = string.format('%s\n<ColorSequenceKeyPoint name="%s">\n<Time>%s</Time>\n<Value>%s</Value>\n</ColorSequenceKeyPoint>', saveString, prop, inst[prop].Time, tostring(inst[prop].Value))
+    end,
     ["ProtectedString"] = function(inst, prop)
         local prostr = inst[prop]
         if decompile and (inst:IsA("LocalScript") or inst:IsA("ModuleScript")) and inst.Source == "" then
@@ -198,104 +161,109 @@ local propFunc = {
         saveString = string.format('%s\n<Ref name="%s">%s</Ref>', saveString, prop, setRef(inst[prop]))
     end,
     ["PhysicalProperties"] = function(inst, prop)
-		local propValue = inst[prop]
-	
-		if propValue then
-			saveString = string.format(
-				'%s\n<PhysicalProperties name="%s">\n<CustomPhysics>true</CustomPhysics>\n<Density>%s</Density>\n<Friction>%s</Friction>\n<Elasticity>%s</Elasticity>\n<FrictionWeight>%s</FrictionWeight>\n<ElasticityWeight>%s</ElasticityWeight>\n</PhysicalProperties>',
-				saveString, prop,
-				propValue.Density, propValue.Friction, propValue.Elasticity, propValue.FrictionWeight, propValue.ElasticityWeight
-			)
-		else
-			saveString = string.format(
-				'%s\n<PhysicalProperties name="%s">\n<CustomPhysics>false</CustomPhysics>\n</PhysicalProperties>',
-				saveString, prop
-			)
-		end
-	end,	
+        local propValue = inst[prop]
+    
+        if propValue then
+            saveString = string.format(
+                '%s\n<PhysicalProperties name="%s">\n<CustomPhysics>true</CustomPhysics>\n<Density>%s</Density>\n<Friction>%s</Friction>\n<Elasticity>%s</Elasticity>\n<FrictionWeight>%s</FrictionWeight>\n<ElasticityWeight>%s</ElasticityWeight>\n</PhysicalProperties>',
+                saveString, prop,
+                propValue.Density, propValue.Friction, propValue.Elasticity, propValue.FrictionWeight, propValue.ElasticityWeight
+            )
+        else
+            saveString = string.format(
+                '%s\n<PhysicalProperties name="%s">\n<CustomPhysics>false</CustomPhysics>\n</PhysicalProperties>',
+                saveString, prop
+            )
+        end
+    end,
 }
 
-local specialClassCases = {
-	["Workspace"] = function(inst)
-		if inst:PGSIsEnabled() then
-			saveString = saveString..'\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
-		else
-			saveString = saveString..'\n<bool name="PGSPhysicsSolverEnabled">false</bool>'
-		end
-		propFunc["double"](inst,"FallenPartsDestroyHeight")
-	end
-}
+local function checkRef(obj)
+    local check = instanceRefs[obj]
+    if check then
+        return tostring(check)
+    end
+    instanceRefs[obj] = instanceCount
+    return tostring(instanceCount)
+end
+
+function CreateInstance(cls, props)
+    local inst = Instance.new(cls)
+    for i, v in pairs(props) do
+        inst[i] = v
+    end
+    return inst
+end
 
 local function writeInstance(inst, altData)
-	if API[inst.ClassName] then
-		print(instanceCount)
-		instanceCount = instanceCount + 1
-		local props = getProperties(inst)
-		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">\n<Properties>'
-		for index, prop in pairs(props) do
-				local propF = propFunc[prop.ValueType]
-				if propF then
-					if not prop.AltName then
-						propF(inst, prop.Name)
-					else
-						appendfile(FileName, saveString)
-						saveString = ""
-						propF(inst, prop.Name)
-						saveString = string.gsub(saveString, prop.Name, prop.AltName)
-					end
-				else
-					local propValue = inst[prop.Name]
-					if propValue and propValue.Value then
-						saveString = saveString .. '\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. propValue.Value .. '</token>'
-					end
-				end
-				appendfile(FileName, saveString)
-				saveString = ""
-		end
-		if specialClassCases[inst.ClassName] then
-			specialClassCases[inst.ClassName](inst)
-		end
-		saveString = saveString .. "\n</Properties>"
-		if inst == extraFolder then
-			if getnilinstances then
-				local nilFolder = Instance.new("Folder", extraFolder)
-				nilFolder.Name = "Nil Instances"
-				local nilledInstances = {}
-				for i, v in pairs(getnilinstances()) do
-					if v.Name ~= "_DexTrash_" and v ~= extraFolder then
-						table.insert(nilledInstances, v)
-					end
-				end
-				writeInstance(nilFolder, nilledInstances)
-			end
-		elseif altData then
-			for i, v in pairs(altData) do
-				writeInstance(v)
-			end
-		else
-			for i, v in pairs(inst:GetChildren()) do
-				writeInstance(v)
-			end
-		end
-		saveString = saveString .. "\n</Item>"
-		appendfile(FileName, saveString)
-		saveString = ""
-	end
+    if API[inst.ClassName] then
+        instanceCount = instanceCount + 1
+        local props = getProperties(inst)
+        saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">\n<Properties>'
+        for index, prop in pairs(props) do
+            local propF = propFunc[prop.ValueType]
+            if propF then
+                if not prop.AltName then
+                    propF(inst, prop.Name)
+                else
+                    appendfile(FileName, saveString)
+                    saveString = ""
+                    propF(inst, prop.Name)
+                    saveString = string.gsub(saveString, prop.Name, prop.AltName)
+                end
+            else
+                local propValue = inst[prop.Name]
+                if propValue and propValue.Value then
+                    saveString = saveString .. '\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. propValue.Value .. '</token>'
+                end
+            end
+            appendfile(FileName, saveString)
+            saveString = ""
+        end
+        if specialClassCases[inst.ClassName] then
+            specialClassCases[inst.ClassName](inst)
+        end
+        saveString = saveString .. "\n</Properties>"
+        if inst == extraFolder then
+            if getnilinstances then
+                local nilFolder = Instance.new("Folder", extraFolder)
+                nilFolder.Name = "Nil Instances"
+                local nilledInstances = {}
+                for i, v in pairs(getnilinstances()) do
+                    if v.Name ~= "_DexTrash_" and v ~= extraFolder then
+                        table.insert(nilledInstances, v)
+                    end
+                end
+                writeInstance(nilFolder, nilledInstances)
+            end
+        elseif altData then
+            for i, v in pairs(altData) do
+                writeInstance(v)
+            end
+        else
+            for i, v in pairs(inst:GetChildren()) do
+                writeInstance(v)
+            end
+        end
+        saveString = saveString .. "\n</Item>"
+        appendfile(FileName, saveString)
+        saveString = ""
+    end
 end
 
 function func_SInstance(inst)
-	print("Begin SaveInstance")
-	writefile(FileName, "")
-	instanceRefs = {}
-	instanceCount = 0
-	savedProps = {}
-	instanceRefs = {}
-	saveString = [[<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
-<External>null</External>
-<External>nil</External>]]
-	writeInstance(inst)
-	appendfile(FileName, "\n</roblox>")
-	print("SaveInstance Completed")
+    print("Begin SaveInstance")
+    writefile(FileName, "")
+    instanceRefs = {}
+    instanceCount = 0
+    savedProps = {}
+    instanceRefs = {}
+    saveString = [[<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+    <External>null</External>
+    <External>nil</External>]]
+    writeInstance(inst)
+    appendfile(FileName, "\n</roblox>")
+    print("SaveInstance Completed")
 end
 
 getgenv().saveinstance = func_SInstance
