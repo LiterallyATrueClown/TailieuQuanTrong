@@ -243,8 +243,11 @@ local function writeInstance(inst, altData)
 						propF(inst, prop.Name)
 						saveString = string.gsub(saveString, prop.Name, prop.AltName)
 					end
-				elseif inst[prop.Name].Value then
-					saveString = saveString ..'\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
+				else
+					local propValue = inst[prop.Name]
+					if propValue and propValue.Value then
+						saveString = saveString .. '\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. propValue.Value .. '</token>'
+					end
 				end
 				appendfile(FileName, saveString)
 				saveString = ""
