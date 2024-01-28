@@ -11,7 +11,9 @@ local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.Place
 local FileName = GameName..".rbxmx"
 extraFolder.Name = "_IMPORTANT_AND_EXTRA_INSTANCES_"
 
-writefile(FileName, "")
+if not isfile(FileName) then
+	writefile(FileName, "")
+end
 
 local ignoreProps = {
 	["Instance"] = {
@@ -280,7 +282,7 @@ end
 
 function func_SInstance(inst)
 	print("Begin SaveInstance")
-	writefile(name..".rbxlx", "")
+	writefile(FileName..".rbxlx", "")
 	instanceRefs = {}
 	instanceCount = 0
 	savedProps = {}
@@ -294,3 +296,4 @@ function func_SInstance(inst)
 end
 
 getgenv().saveinstance = func_SInstance
+
