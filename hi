@@ -313,7 +313,6 @@ local function writeInstance(inst, altData)
 		saveString = saveString .. "\n</Item>"
 		table.insert(storedInstances, saveString)
 		saveString = ""
-		wait()
 	end
 end
 
