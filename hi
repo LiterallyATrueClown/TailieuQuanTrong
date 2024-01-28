@@ -39,7 +39,7 @@ local function loadAPIJson()
             if isfile("API-DUMP.json") then
                 APIJson = readfile("API-DUMP.json")
             else
-                writefile("API-DUMP.json", game:HttpGetAsync("https://raw.githubusercontent.com/LiterallyATrueClown/Owo/main/API-DUMP.json"))
+                writefile("API-DUMP.json", game:HttpGetAsync("https://raw.githubusercontent.com/LiterallyATrueClown/Owo/main/rbxapi.json"))
                 APIJson = readfile("API-DUMP.json")
             end
         end
