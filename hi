@@ -122,131 +122,92 @@ function CreateInstance(cls,props)
 end
 
 local propFunc = {
-	["bool"] = function(inst,prop)
-		saveString = saveString..'\n<bool name="'..prop..'">'..tostring(inst[prop])..'</bool>'
-	end,
-	["float"] = function(inst,prop)
-		saveString = saveString..'\n<float name="'..prop..'">'..tostring(inst[prop])..'</float>'
-	end,
-	["int"] = function(inst,prop)
-		saveString = saveString..'\n<int name="'..prop..'">'..tostring(inst[prop])..'</int>'
-	end,
-	["double"] = function(inst,prop)
-		saveString = saveString..'\n<float name="'..prop..'">'..tostring(inst[prop])..'</float>'
-	end,
-	["string"] = function(inst,prop)
-		local cleanName = inst[prop]
-		cleanName = string.gsub(cleanName,"&","&amp;")
-		cleanName = string.gsub(cleanName,"<","&lt;")
-		cleanName = string.gsub(cleanName,">","&gt;")
-		saveString = saveString..'\n<string name="'..prop..'">'..cleanName..'</string>'
-	end,
-	["BrickColor"] = function(inst,prop)
-		saveString = saveString..'\n<int name="'..prop..'">'..tostring(inst[prop].Number)..'</int>'
-	end,
-	["Vector2"] = function(inst,prop)
-		saveString = saveString..'\n<Vector2 name="'..prop..'">'
-		saveString = saveString..'\n<X>'..inst[prop].x..'</X>'
-		saveString = saveString..'\n<Y>'..inst[prop].y..'</Y>'
-		saveString = saveString..'\n</Vector2>'
-	end,
-	["Vector3"] = function(inst,prop)
-		saveString = saveString..'\n<Vector3 name="'..prop..'">'
-		saveString = saveString..'\n<X>'..inst[prop].x..'</X>'
-		saveString = saveString..'\n<Y>'..inst[prop].y..'</Y>'
-		saveString = saveString..'\n<Z>'..inst[prop].z..'</Z>'
-		saveString = saveString..'\n</Vector3>'
-	end,
-	["CoordinateFrame"] = function(inst,prop)
-		local X,Y,Z,R00,R01,R02,R10,R11,R12,R20,R21,R22 = inst[prop]:components()
-		saveString = saveString..'\n<CoordinateFrame name="'..prop..'">'
-		saveString = saveString..'\n<X>'..X..'</X>'
-		saveString = saveString..'\n<Y>'..Y..'</Y>'
-		saveString = saveString..'\n<Z>'..Z..'</Z>'
-		saveString = saveString..'\n<R00>'..R00..'</R00>'
-		saveString = saveString..'\n<R01>'..R01..'</R01>'
-		saveString = saveString..'\n<R02>'..R02..'</R02>'
-		saveString = saveString..'\n<R10>'..R10..'</R10>'
-		saveString = saveString..'\n<R11>'..R11..'</R11>'
-		saveString = saveString..'\n<R12>'..R12..'</R12>'
-		saveString = saveString..'\n<R20>'..R20..'</R20>'
-		saveString = saveString..'\n<R21>'..R21..'</R21>'
-		saveString = saveString..'\n<R22>'..R22..'</R22>'
-		saveString = saveString..'\n</CoordinateFrame>'
-	end,
-	["Content"] = function(inst,prop)
-		local cleanName = tostring(inst[prop])
-		cleanName = string.gsub(cleanName,"&","&amp;")
-		cleanName = string.gsub(cleanName,"<","&lt;")
-		cleanName = string.gsub(cleanName,">","&gt;")
-		saveString = saveString..'\n<Content name="'..prop..'"><url>'..cleanName..'</url></Content>'
-	end,
-	["UDim2"] = function(inst,prop)
-		saveString = saveString..'\n<UDim2 name="'..prop..'">'
-		saveString = saveString..'\n<XS>'..inst[prop].X.Scale..'</XS>'
-		saveString = saveString..'\n<XO>'..inst[prop].X.Offset..'</XO>'
-		saveString = saveString..'\n<YS>'..inst[prop].Y.Scale..'</YS>'
-		saveString = saveString..'\n<YO>'..inst[prop].Y.Offset..'</YO>'
-		saveString = saveString..'\n</UDim2>'
-	end,
-	["Color3"] = function(inst,prop)
-		saveString = saveString..'\n<Color3 name="'..prop..'">'
-		saveString = saveString..'\n<R>'..inst[prop].r..'</R>'
-		saveString = saveString..'\n<G>'..inst[prop].g..'</G>'
-		saveString = saveString..'\n<B>'..inst[prop].b..'</B>'
-		saveString = saveString..'\n</Color3>'
-	end,
-	["NumberRange"] = function(inst,prop)
-		saveString = saveString..'\n<NumberRange name="'..prop..'">'..tostring(inst[prop].Min).." "..tostring(inst[prop].Max).." "..'</NumberRange>'
-	end,
-	["NumberSequence"] = function(inst,prop)
-		saveString = saveString..'\n<NumberSequence name="'..prop..'">'
-		for i,v in pairs(inst[prop].Keypoints) do
-			saveString = saveString..tostring(v.Time).." "..tostring(v.Value).." "..tostring(v.Envelope).." "
-		end
-		saveString = saveString..'</NumberSequence>'
-	end,
-	["ColorSequence"] = function(inst,prop)
-		saveString = saveString..'\n<ColorSequence name="'..prop..'">'
-		for i,v in pairs(inst[prop].Keypoints) do
-			saveString = saveString..tostring(v.Time).." "..tostring(v.Value.r).." "..tostring(v.Value.g).." "..tostring(v.Value.b).." 0 "
-		end
-		saveString = saveString..'</ColorSequence>'
-	end,
-	["Rect2D"] = function(inst,prop)
-		saveString = saveString..'\n<Rect2D name="'..prop..'">'
-		saveString = saveString..'\n<min>'
-		saveString = saveString..'\n<X>'..tostring(inst[prop].Min.X)..'</X>'
-		saveString = saveString..'\n<Y>'..tostring(inst[prop].Min.Y)..'</Y>'
-		saveString = saveString..'\n</min>'
-		saveString = saveString..'\n<max>'
-		saveString = saveString..'\n<X>'..tostring(inst[prop].Max.X)..'</X>'
-		saveString = saveString..'\n<Y>'..tostring(inst[prop].Max.Y)..'</Y>'
-		saveString = saveString..'\n</max>'
-		saveString = saveString..'\n</Rect2D>'
-	end,
-	["ProtectedString"] = function(inst,prop)
-		local prostr = inst[prop]
-		if decompile and (inst:IsA("LocalScript") or inst:IsA("ModuleScript")) and inst.Source == "" then prostr = decompile(inst) end
-		if inst == terrainData then prostr = "return [==["..table.concat(terrainChunks,"|").."]==]" terrainChunks = {} end
-		saveString = saveString..'\n<ProtectedString name="'..prop..'"><![CDATA['..prostr..']]></ProtectedString>'
-	end,
-	["Object"] = function(inst,prop)
-		saveString = saveString..'\n<Ref name="'..prop..'">'..setRef(inst[prop])..'</Ref>'
-	end,
-	["PhysicalProperties"] = function(inst,prop)
-		if inst[prop] then
-			saveString = saveString..'\n<PhysicalProperties name="'..prop..'">\n<CustomPhysics>true</CustomPhysics>'
-			saveString = saveString..'\n<Density>'..tostring(inst[prop].Density)..'</Density>'
-			saveString = saveString..'\n<Friction>'..tostring(inst[prop].Friction)..'</Friction>'
-			saveString = saveString..'\n<Elasticity>'..tostring(inst[prop].Elasticity)..'</Elasticity>'
-			saveString = saveString..'\n<FrictionWeight>'..tostring(inst[prop].FrictionWeight)..'</FrictionWeight>'
-			saveString = saveString..'\n<ElasticityWeight>'..tostring(inst[prop].ElasticityWeight)..'</ElasticityWeight>'
-			saveString = saveString..'\n</PhysicalProperties>'
+    ["bool"] = function(inst, prop)
+        saveString = string.format('%s\n<bool name="%s">%s</bool>', saveString, prop, tostring(inst[prop]))
+    end,
+    ["float"] = function(inst, prop)
+        saveString = string.format('%s\n<float name="%s">%s</float>', saveString, prop, tostring(inst[prop]))
+    end,
+    ["int"] = function(inst, prop)
+        saveString = string.format('%s\n<int name="%s">%s</int>', saveString, prop, tostring(inst[prop]))
+    end,
+    ["double"] = function(inst, prop)
+        saveString = string.format('%s\n<float name="%s">%s</float>', saveString, prop, tostring(inst[prop]))
+    end,
+    ["string"] = function(inst, prop)
+        local cleanName = string.gsub(tostring(inst[prop]), "&", "&amp;")
+        cleanName = string.gsub(cleanName, "<", "&lt;")
+        cleanName = string.gsub(cleanName, ">", "&gt;")
+        saveString = string.format('%s\n<string name="%s">%s</string>', saveString, prop, cleanName)
+    end,
+    ["BrickColor"] = function(inst, prop)
+        saveString = string.format('%s\n<int name="%s">%s</int>', saveString, prop, tostring(inst[prop].Number))
+    end,
+    ["Vector2"] = function(inst, prop)
+        saveString = string.format('%s\n<Vector2 name="%s">\n<X>%s</X>\n<Y>%s</Y>\n</Vector2>', saveString, prop, inst[prop].x, inst[prop].y)
+    end,
+    ["Vector3"] = function(inst, prop)
+        saveString = string.format('%s\n<Vector3 name="%s">\n<X>%s</X>\n<Y>%s</Y>\n<Z>%s</Z>\n</Vector3>', saveString, prop, inst[prop].x, inst[prop].y, inst[prop].z)
+    end,
+    ["CoordinateFrame"] = function(inst, prop)
+        local X, Y, Z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = inst[prop]:components()
+        saveString = string.format('%s\n<CoordinateFrame name="%s">\n<X>%s</X>\n<Y>%s</Y>\n<Z>%s</Z>\n<R00>%s</R00>\n<R01>%s</R01>\n<R02>%s</R02>\n<R10>%s</R10>\n<R11>%s</R11>\n<R12>%s</R12>\n<R20>%s</R20>\n<R21>%s</R21>\n<R22>%s</R22>\n</CoordinateFrame>', saveString, prop, X, Y, Z, R00, R01, R02, R10, R11, R12, R20, R21, R22)
+    end,
+    ["Content"] = function(inst, prop)
+        local cleanName = tostring(inst[prop])
+        cleanName = string.gsub(cleanName, "&", "&amp;")
+        cleanName = string.gsub(cleanName, "<", "&lt;")
+        cleanName = string.gsub(cleanName, ">", "&gt;")
+        saveString = string.format('%s\n<Content name="%s"><url>%s</url></Content>', saveString, prop, cleanName)
+    end,
+    ["UDim2"] = function(inst, prop)
+        saveString = string.format('%s\n<UDim2 name="%s">\n<XS>%s</XS>\n<XO>%s</XO>\n<YS>%s</YS>\n<YO>%s</YO>\n</UDim2>', saveString, prop, inst[prop].X.Scale, inst[prop].X.Offset, inst[prop].Y.Scale, inst[prop].Y.Offset)
+    end,
+    ["Color3"] = function(inst, prop)
+        saveString = string.format('%s\n<Color3 name="%s">\n<R>%s</R>\n<G>%s</G>\n<B>%s</B>\n</Color3>', saveString, prop, inst[prop].r, inst[prop].g, inst[prop].b)
+    end,
+    ["NumberRange"] = function(inst, prop)
+        saveString = string.format('%s\n<NumberRange name="%s">%s %s</NumberRange>', saveString, prop, tostring(inst[prop].Min), tostring(inst[prop].Max))
+    end,
+    ["NumberSequence"] = function(inst, prop)
+        saveString = string.format('%s\n<NumberSequence name="%s">%s</NumberSequence>', saveString, prop, table.concat(inst[prop].Keypoints, " "))
+    end,
+    ["ColorSequence"] = function(inst, prop)
+        saveString = string.format('%s\n<ColorSequence name="%s">%s</ColorSequence>', saveString, prop, table.concat(inst[prop].Keypoints, " "))
+    end,
+    ["Rect2D"] = function(inst, prop)
+        saveString = string.format('%s\n<Rect2D name="%s">\n<min>\n<X>%s</X>\n<Y>%s</Y>\n</min>\n<max>\n<X>%s</X>\n<Y>%s</Y>\n</max>\n</Rect2D>', saveString, prop, tostring(inst[prop].Min.X), tostring(inst[prop].Min.Y), tostring(inst[prop].Max.X), tostring(inst[prop].Max.Y))
+    end,
+    ["ProtectedString"] = function(inst, prop)
+        local prostr = inst[prop]
+        if decompile and (inst:IsA("LocalScript") or inst:IsA("ModuleScript")) and inst.Source == "" then
+            prostr = decompile(inst)
+        end
+        if inst == terrainData then
+            prostr = "return [==[" .. table.concat(terrainChunks, "|") .. "]==]"
+            terrainChunks = {}
+        end
+        saveString = string.format('%s\n<ProtectedString name="%s"><![CDATA[%s]]></ProtectedString>', saveString, prop, prostr)
+    end,
+    ["Object"] = function(inst, prop)
+        saveString = string.format('%s\n<Ref name="%s">%s</Ref>', saveString, prop, setRef(inst[prop]))
+    end,
+    ["PhysicalProperties"] = function(inst, prop)
+		local propValue = inst[prop]
+	
+		if propValue then
+			saveString = string.format(
+				'%s\n<PhysicalProperties name="%s">\n<CustomPhysics>true</CustomPhysics>\n<Density>%s</Density>\n<Friction>%s</Friction>\n<Elasticity>%s</Elasticity>\n<FrictionWeight>%s</FrictionWeight>\n<ElasticityWeight>%s</ElasticityWeight>\n</PhysicalProperties>',
+				saveString, prop,
+				propValue.Density, propValue.Friction, propValue.Elasticity, propValue.FrictionWeight, propValue.ElasticityWeight
+			)
 		else
-			saveString = saveString..'\n<PhysicalProperties name="'..prop..'">\n<CustomPhysics>false</CustomPhysics>\n</PhysicalProperties>'
+			saveString = string.format(
+				'%s\n<PhysicalProperties name="%s">\n<CustomPhysics>false</CustomPhysics>\n</PhysicalProperties>',
+				saveString, prop
+			)
 		end
-	end
+	end,	
 }
 
 local specialClassCases = {
@@ -262,28 +223,26 @@ local specialClassCases = {
 
 local function writeInstance(inst, altData)
 	if API[inst.ClassName] then
+		print(instanceCount)
 		instanceCount = instanceCount + 1
 		local props = getProperties(inst)
-		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">'
-		saveString = saveString .. "\n<Properties>"
+		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">\n<Properties>'
 		for index, prop in pairs(props) do
-			ypcall(function()
-				local propF = propFunc[prop.ValueType]
-				if propF then
-					if not prop.AltName then
-						propF(inst, prop.Name)
-					else
-						table.insert(storedInstances, saveString)
-						saveString = ""
-						propF(inst, prop.Name)
-						saveString = string.gsub(saveString, prop.Name, prop.AltName)
-					end
-				elseif inst[prop.Name].Value then
-					saveString = saveString .. '\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
+			local propF = propFunc[prop.ValueType]
+			if propF then
+				if not prop.AltName then
+					propF(inst, prop.Name)
+				else
+					table.insert(storedInstances, saveString)
+					saveString = ""
+					propF(inst, prop.Name)
+					saveString = string.gsub(saveString, prop.Name, prop.AltName)
 				end
-				table.insert(storedInstances, saveString)
-				saveString = ""
-			end)
+			elseif inst[prop.Name].Value then
+				saveString = saveString ..'\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
+			end
+			table.insert(storedInstances, saveString)
+			saveString = ""
 		end
 		if specialClassCases[inst.ClassName] then
 			specialClassCases[inst.ClassName](inst)
@@ -331,12 +290,16 @@ function func_SInstance(inst, name)
 	name = removeExtension(name)
 	instanceRefs = {}
 	storedInstances = {}
+	instanceCount = 0
+	savedProps = {}
+	instanceRefs = {}
+	storedInstances = {}
 	saveString = [[<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
 <External>null</External>
 <External>nil</External>]]
 	writeInstance(inst)
 	table.insert(storedInstances,"\n</roblox>")
-	writefile(name..".rbxmx",table.concat(storedInstances))
+	writefile(name..".rbxlx", table.concat(storedInstances))
 	print("SaveInstance Completed")
 end
 
