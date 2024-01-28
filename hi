@@ -6,9 +6,12 @@ local instanceCount = 0
 local saveString = ""
 local savedProps = {}
 local instanceRefs = {}
-local storedInstances = {}
 local extraFolder = Instance.new("Folder")
+local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local FileName = GameName..".rbxmx"
 extraFolder.Name = "_IMPORTANT_AND_EXTRA_INSTANCES_"
+
+writefile(FileName, "")
 
 local ignoreProps = {
 	["Instance"] = {
@@ -233,7 +236,7 @@ local function writeInstance(inst, altData)
 				if not prop.AltName then
 					propF(inst, prop.Name)
 				else
-					table.insert(storedInstances, saveString)
+					appendfile(FileName, saveString)
 					saveString = ""
 					propF(inst, prop.Name)
 					saveString = string.gsub(saveString, prop.Name, prop.AltName)
@@ -241,7 +244,7 @@ local function writeInstance(inst, altData)
 			elseif inst[prop.Name].Value then
 				saveString = saveString ..'\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
 			end
-			table.insert(storedInstances, saveString)
+			appendfile(FileName, saveString)
 			saveString = ""
 		end
 		if specialClassCases[inst.ClassName] then
@@ -270,39 +273,24 @@ local function writeInstance(inst, altData)
 			end
 		end
 		saveString = saveString .. "\n</Item>"
-		table.insert(storedInstances, saveString)
+		appendfile(FileName, saveString)
 		saveString = ""
 	end
 end
 
-local function removeExtension(str)
-    if string.find(str,".rbxm") then
-        return string.sub(str,1,string.find(str,".rbxm")-1)
-    elseif string.find(str,".rbxmx") then
-        return string.sub(str,1,string.find(str,".rbxmx")-1)
-    else
-        return str
-    end
-end
-
-function func_SInstance(inst, name)
+function func_SInstance(inst)
 	print("Begin SaveInstance")
-	name = removeExtension(name)
+	writefile(name..".rbxlx", "")
 	instanceRefs = {}
-	storedInstances = {}
 	instanceCount = 0
 	savedProps = {}
 	instanceRefs = {}
-	storedInstances = {}
 	saveString = [[<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
 <External>null</External>
 <External>nil</External>]]
 	writeInstance(inst)
-	table.insert(storedInstances,"\n</roblox>")
-	writefile(name..".rbxlx", table.concat(storedInstances))
+	appendfile(FileName, "\n</roblox>")
 	print("SaveInstance Completed")
 end
 
 getgenv().saveinstance = func_SInstance
-_G.saveinstance = func_SInstance
-return func_SInstance
