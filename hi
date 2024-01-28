@@ -266,7 +266,7 @@ local function writeInstance(inst, altData)
 		local props = getProperties(inst)
 		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">'
 		saveString = saveString .. "\n<Properties>"
-		for _, prop in pairs(props) do
+		for index, prop in pairs(props) do
 			ypcall(function()
 				local propF = propFunc[prop.ValueType]
 				if propF then
@@ -284,7 +284,7 @@ local function writeInstance(inst, altData)
 				table.insert(storedInstances, saveString)
 				saveString = ""
 			end)
-			game:GetService("RunService").Heartbeat:Wait()
+			wait()
 			warn("Processing property", index, "of", #props)
 		end
 		if specialClassCases[inst.ClassName] then
@@ -343,3 +343,4 @@ end
 getgenv().saveinstance = func_SInstance
 _G.saveinstance = func_SInstance
 return func_SInstance
+
