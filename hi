@@ -233,21 +233,23 @@ local function writeInstance(inst, altData)
 		local props = getProperties(inst)
 		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">\n<Properties>'
 		for index, prop in pairs(props) do
-			local propF = propFunc[prop.ValueType]
-			if propF then
-				if not prop.AltName then
-					propF(inst, prop.Name)
-				else
-					appendfile(FileName, saveString)
-					saveString = ""
-					propF(inst, prop.Name)
-					saveString = string.gsub(saveString, prop.Name, prop.AltName)
+			pcall(function()
+				local propF = propFunc[prop.ValueType]
+				if propF then
+					if not prop.AltName then
+						propF(inst, prop.Name)
+					else
+						appendfile(FileName, saveString)
+						saveString = ""
+						propF(inst, prop.Name)
+						saveString = string.gsub(saveString, prop.Name, prop.AltName)
+					end
+				elseif inst[prop.Name].Value then
+					saveString = saveString ..'\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
 				end
-			elseif inst[prop.Name].Value then
-				saveString = saveString ..'\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
-			end
-			appendfile(FileName, saveString)
-			saveString = ""
+				appendfile(FileName, saveString)
+				saveString = ""
+			end)
 		end
 		if specialClassCases[inst.ClassName] then
 			specialClassCases[inst.ClassName](inst)
@@ -296,4 +298,3 @@ function func_SInstance(inst)
 end
 
 getgenv().saveinstance = func_SInstance
-
