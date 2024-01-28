@@ -82,6 +82,7 @@ local function processAPIJson()
 end
 
 local function getProperties(obj)
+    print(savedProps[obj.ClassName])
     if savedProps[obj.ClassName] then return savedProps[obj.ClassName] end
     
     local tempProps = {}
