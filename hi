@@ -5,6 +5,9 @@ local APIJson
 local instanceCount = 0
 local saveString = ""
 local storedInstances = {}
+local instanceRefs = {}
+local savedProps = {}
+local propFunc = {}
 local extraFolder = Instance.new("Folder")
 extraFolder.Name = "_IMPORTANT_AND_EXTRA_INSTANCES_"
 
@@ -82,7 +85,7 @@ local function processAPIJson()
 end
 
 local function getProperties(obj)
-    print(savedProps[obj.ClassName])
+    print(savedProps)
     if savedProps[obj.ClassName] then return savedProps[obj.ClassName] end
     
     local tempProps = {}
