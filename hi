@@ -338,6 +338,7 @@ function func_SInstance(inst, name)
 	writeInstance(inst)
 	table.insert(storedInstances,"\n</roblox>")
 	writefile(name..".rbxmx",table.concat(storedInstances))
+	print("SaveInstance Completed")
 end
 
 getgenv().saveinstance = func_SInstance
