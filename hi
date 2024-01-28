@@ -285,6 +285,7 @@ local function writeInstance(inst, altData)
 				saveString = ""
 			end)
 			game:GetService("RunService").Heartbeat:Wait()
+			warn("Processing property", index, "of", #props)
 		end
 		if specialClassCases[inst.ClassName] then
 			specialClassCases[inst.ClassName](inst)
