@@ -125,6 +125,17 @@ local function setRef(obj)
     return "RBX" .. tostring(instanceCount)
 end
 
+local specialClassCases = {
+    ["Workspace"] = function(inst)
+        if inst:PGSIsEnabled() then
+            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
+        else
+            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">false</bool>'
+        end
+        propFunc["double"](inst, "FallenPartsDestroyHeight")
+    end
+}
+
 local function writeInstance(inst, altData)
     if API[inst.ClassName] then
         instanceCount = instanceCount + 1
@@ -181,17 +192,6 @@ local function writeInstance(inst, altData)
         saveString = ""
     end
 end
-
-local specialClassCases = {
-    ["Workspace"] = function(inst)
-        if inst:PGSIsEnabled() then
-            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
-        else
-            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">false</bool>'
-        end
-        propFunc["double"](inst, "FallenPartsDestroyHeight")
-    end
-}
 
 local function processSpecialClassCases(inst)
     local specialCaseFunction = specialClassCases[inst.ClassName]
