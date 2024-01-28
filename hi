@@ -260,59 +260,59 @@ local specialClassCases = {
 	end
 }
 
-local function writeInstance(inst,altData)
+local function writeInstance(inst, altData)
 	if API[inst.ClassName] then
 		instanceCount = instanceCount + 1
 		local props = getProperties(inst)
-		saveString = saveString..'\n<Item class="'..inst.ClassName..'" referent="RBX'..checkRef(inst)..'">'
-		saveString = saveString.."\n<Properties>"
-		for _,prop in pairs(props) do
+		saveString = saveString .. '\n<Item class="' .. inst.ClassName .. '" referent="RBX' .. checkRef(inst) .. '">'
+		saveString = saveString .. "\n<Properties>"
+		for _, prop in pairs(props) do
 			ypcall(function()
 				local propF = propFunc[prop.ValueType]
 				if propF then
 					if not prop.AltName then
-						propF(inst,prop.Name)
+						propF(inst, prop.Name)
 					else
-						table.insert(storedInstances,saveString)
+						table.insert(storedInstances, saveString)
 						saveString = ""
-						propF(inst,prop.Name)
-						saveString = string.gsub(saveString,prop.Name,prop.AltName)
+						propF(inst, prop.Name)
+						saveString = string.gsub(saveString, prop.Name, prop.AltName)
 					end
 				elseif inst[prop.Name].Value then
-					saveString = saveString..'\n<token name="'..(prop.AltName or prop.Name)..'">'..inst[prop.Name].Value..'</token>'
+					saveString = saveString .. '\n<token name="' .. (prop.AltName or prop.Name) .. '">' .. inst[prop.Name].Value .. '</token>'
 				end
-				table.insert(storedInstances,saveString)
+				table.insert(storedInstances, saveString)
 				saveString = ""
 			end)
+			game:GetService("RunService").Heartbeat:Wait()
 		end
 		if specialClassCases[inst.ClassName] then
 			specialClassCases[inst.ClassName](inst)
 		end
-		saveString = saveString.."\n</Properties>"
+		saveString = saveString .. "\n</Properties>"
 		if inst == extraFolder then
 			if getnilinstances then
-				local nilFolder = Instance.new("Folder",extraFolder)
+				local nilFolder = Instance.new("Folder", extraFolder)
 				nilFolder.Name = "Nil Instances"
 				local nilledInstances = {}
-				for i,v in pairs(getnilinstances()) do
+				for i, v in pairs(getnilinstances()) do
 					if v.Name ~= "_DexTrash_" and v ~= extraFolder then
-						table.insert(nilledInstances,v)
+						table.insert(nilledInstances, v)
 					end
 				end
-				writeInstance(nilFolder,nilledInstances)
+				writeInstance(nilFolder, nilledInstances)
 			end
-
 		elseif altData then
-			for i,v in pairs(altData) do
+			for i, v in pairs(altData) do
 				writeInstance(v)
 			end
 		else
-			for i,v in pairs(inst:GetChildren()) do
+			for i, v in pairs(inst:GetChildren()) do
 				writeInstance(v)
 			end
 		end
-		saveString = saveString.."\n</Item>"
-		table.insert(storedInstances,saveString)
+		saveString = saveString .. "\n</Item>"
+		table.insert(storedInstances, saveString)
 		saveString = ""
 	end
 end
@@ -337,7 +337,6 @@ function func_SInstance(inst, name)
 	writeInstance(inst)
 	table.insert(storedInstances,"\n</roblox>")
 	writefile(name..".rbxmx",table.concat(storedInstances))
-	storedInstances = {}
 end
 
 getgenv().saveinstance = func_SInstance
