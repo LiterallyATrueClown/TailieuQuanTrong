@@ -183,33 +183,24 @@ local function writeInstance(inst, altData)
     end
 end
 
-local function processSpecialClassCases(inst)
-    local specialCaseFunction = specialClassCases[inst.ClassName]
-    if specialCaseFunction then
-        specialCaseFunction(inst)
-    end
-end
-
-local function generateXml()
+local function generateXml(filename)
     saveString = [[<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
 <External>null</External>
 <External>nil</External>]]
     writeInstance(extraFolder)
     table.insert(storedInstances, "\n</roblox>")
-    writefile("output.rbxmx", table.concat(storedInstances))
+    writefile(filename..".rbxmx", table.concat(storedInstances))
     storedInstances = {}
 end
 
-local function main()
+getgenv().saveinstance = function(object, filename)
     loadAPIJson()
     processAPIJson()
     local success, err = pcall(function()
-        func_SInstance(workspace, "output")
+        func_SInstance(object, filename)
     end)
     if not success then
-        warn("Failed to execute func_SInstance: " .. err)
+        warn("Failed to SaveInstance: " .. err)
     end
-    generateXml()
+    generateXml(filename)
 end
-
-main()
