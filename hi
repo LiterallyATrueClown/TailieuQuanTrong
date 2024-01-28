@@ -8,6 +8,7 @@ local storedInstances = {}
 local instanceRefs = {}
 local savedProps = {}
 local propFunc = {}
+local specialClassCases = {}
 local extraFolder = Instance.new("Folder")
 extraFolder.Name = "_IMPORTANT_AND_EXTRA_INSTANCES_"
 
@@ -124,17 +125,6 @@ local function setRef(obj)
     instanceRefs[obj] = instanceCount
     return "RBX" .. tostring(instanceCount)
 end
-
-local specialClassCases = {
-    ["Workspace"] = function(inst)
-        if inst:PGSIsEnabled() then
-            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">true</bool>'
-        else
-            saveString = saveString .. '\n<bool name="PGSPhysicsSolverEnabled">false</bool>'
-        end
-        propFunc["double"](inst, "FallenPartsDestroyHeight")
-    end
-}
 
 local function writeInstance(inst, altData)
     if API[inst.ClassName] then
