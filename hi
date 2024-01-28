@@ -284,8 +284,6 @@ local function writeInstance(inst, altData)
 				table.insert(storedInstances, saveString)
 				saveString = ""
 			end)
-			wait()
-			warn("Processing property", index, "of", #props)
 		end
 		if specialClassCases[inst.ClassName] then
 			specialClassCases[inst.ClassName](inst)
@@ -315,6 +313,7 @@ local function writeInstance(inst, altData)
 		saveString = saveString .. "\n</Item>"
 		table.insert(storedInstances, saveString)
 		saveString = ""
+		wait()
 	end
 end
 
@@ -329,6 +328,7 @@ local function removeExtension(str)
 end
 
 function func_SInstance(inst, name)
+	print("Begin SaveInstance")
 	name = removeExtension(name)
 	instanceRefs = {}
 	storedInstances = {}
@@ -343,4 +343,3 @@ end
 getgenv().saveinstance = func_SInstance
 _G.saveinstance = func_SInstance
 return func_SInstance
-
